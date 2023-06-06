@@ -1,8 +1,10 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const path = require("path");
 
 const booksRoutes = require("./routes/books");
+const userRoutes = require("./routes/user");
 
 mongoose
   .connect("mongodb+srv://anaislcno:datagrimoire@cluster-grimoire.ufaucy9.mongodb.net/?retryWrites=true&w=majority", {
@@ -24,5 +26,6 @@ app.use((req, res, next) => {
 app.use(bodyParser.json());
 
 app.use("/api/books", booksRoutes);
+app.use("/api/auth", userRoutes);
 
 module.exports = app;
