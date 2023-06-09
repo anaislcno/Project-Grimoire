@@ -1,14 +1,21 @@
 const Book = require("../models/Book");
 const fs = require("fs");
+const sharp = require("sharp");
+const path = require("path");
 
-exports.createBook = (req, res, next) => {
+exports.createBook = async (req, res, next) => {
   const bookObject = JSON.parse(req.body.book);
   delete bookObject._id;
   delete bookObject._userId;
+  const { filename: image } = req.file;
+
+  await sharp(req.file.path).resize(500).jpeg({ quality: 80 }).toFile(path.resolve(req.file.destination, "library", image));
+  fs.unlinkSync(req.file.path);
+
   const book = new Book({
     ...bookObject,
     userId: req.auth.userId,
-    imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
+    imageUrl: `${req.protocol}://${req.get("host")}/images/library/${req.file.filename}`,
   });
 
   book
@@ -33,7 +40,7 @@ exports.modifyBook = (req, res, next) => {
   const bookObject = req.file
     ? {
         ...JSON.parse(req.body.book),
-        imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
+        imageUrl: `${req.protocol}://${req.get("host")}/images/library/${req.file.filename}`,
       }
     : { ...req.body };
 
@@ -57,7 +64,7 @@ exports.deleteBook = (req, res, next) => {
       if (book.userId != req.auth.userId) {
         res.status(403).json({ message: "Unauthorized request" });
       } else {
-        const filename = book.imageUrl.split("/images/")[1];
+        const filename = book.imageUrl.split("/images/library/")[1];
         fs.unlink(`images/${filename}`, () => {
           Book.deleteOne({ _id: req.params.id })
             .then(() => {
