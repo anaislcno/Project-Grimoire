@@ -78,16 +78,20 @@ exports.deleteBook = (req, res, next) => {
 };
 
 exports.rateBook = (req, res, next) => {
-  const { userId, grade } = req.body;
+  const { userId, rating } = req.body;
   const bookId = req.params.id;
 
   Book.findById(bookId)
     .then((book) => {
       const existingRating = book.ratings.find((rating) => rating.userId === userId);
+
       if (existingRating) {
         res.status(400).json({ message: "Vous avez déjà noté ce livre." });
       } else {
-        book.ratings.push({ userId, grade });
+        book.ratings.push({
+          userId: userId,
+          grade: rating,
+        });
 
         const totalRatings = book.ratings.length;
         const sumOfRatings = book.ratings.reduce((sum, rating) => sum + rating.grade, 0);
@@ -95,8 +99,15 @@ exports.rateBook = (req, res, next) => {
 
         book
           .save()
-          .then(() => res.status(200).json({ message: "Note enregistrée" }))
-          .catch((error) => res.status(400).json({ error }));
+          .then((book) => res.status(200).json(book))
+          .catch((error) => {
+            console.log("-----------------------");
+            console.log("[Error Catch]");
+            console.log("-----------------------");
+
+            console.log(error);
+            return res.status(400).json({ error });
+          });
       }
     })
     .catch((error) => res.status(404).json({ error }));
