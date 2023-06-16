@@ -101,14 +101,19 @@ exports.rateBook = (req, res, next) => {
           .save()
           .then((book) => res.status(200).json(book))
           .catch((error) => {
-            console.log("-----------------------");
-            console.log("[Error Catch]");
-            console.log("-----------------------");
-
-            console.log(error);
             return res.status(400).json({ error });
           });
       }
     })
     .catch((error) => res.status(404).json({ error }));
 };
+
+// exports.getTopRatedBooks = (req, res, next) => {
+//   Book.find()
+//     .sort({ averageRating: -1 }) // Trier par note moyenne décroissante
+//     .limit(3) // Récupérer les trois premiers livres
+//     .select("-ratings") // Exclure le tableau des notes pour optimiser la requête
+//     .exec() // Utiliser la méthode exec() pour renvoyer une promesse
+//     .then((books) => res.status(200).json(books))
+//     .catch((error) => res.status(400).json({ error }));
+// };
