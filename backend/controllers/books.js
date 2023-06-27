@@ -9,8 +9,16 @@ exports.createBook = async (req, res, next) => {
   delete bookObject._userId;
   const { filename: image } = req.file;
 
-  await sharp(req.file.path).resize(500).jpeg({ quality: 80 }).toFile(path.resolve(req.file.destination, "library", image));
-  fs.unlinkSync(req.file.path);
+  await sharp(req.file.path)
+    .resize(500)
+    .jpeg({ quality: 80 })
+    .toFile(path.resolve(req.file.destination, "library", image))
+    .then(() => {
+      fs.unlinkSync(req.file.path);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 
   const book = new Book({
     ...bookObject,
@@ -65,7 +73,7 @@ exports.deleteBook = (req, res, next) => {
         res.status(403).json({ message: "Unauthorized request" });
       } else {
         const filename = book.imageUrl.split("/images/library/")[1];
-        fs.unlink(`images/${filename}`, () => {
+        fs.unlink(`images/library/${filename}`, () => {
           Book.deleteOne({ _id: req.params.id })
             .then(() => {
               res.status(200).json({ message: "Livre supprimé !" });
@@ -108,12 +116,10 @@ exports.rateBook = (req, res, next) => {
     .catch((error) => res.status(404).json({ error }));
 };
 
-// exports.getTopRatedBooks = (req, res, next) => {
-//   Book.find()
-//     .sort({ averageRating: -1 }) // Trier par note moyenne décroissante
-//     .limit(3) // Récupérer les trois premiers livres
-//     .select("-ratings") // Exclure le tableau des notes pour optimiser la requête
-//     .exec() // Utiliser la méthode exec() pour renvoyer une promesse
-//     .then((books) => res.status(200).json(books))
-//     .catch((error) => res.status(400).json({ error }));
-// };
+exports.getTopRatedBooks = (req, res, next) => {
+  Book.find()
+    .sort({ averageRating: -1 }) // Trier par note moyenne décroissante
+    .limit(3) // Récupérer les trois premiers livres
+    .then((books) => res.status(200).json(books))
+    .catch((error) => res.status(400).json({ error }));
+};

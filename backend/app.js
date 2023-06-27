@@ -2,12 +2,13 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const path = require("path");
+require("dotenv").config();
 
 const booksRoutes = require("./routes/books");
 const userRoutes = require("./routes/user");
 
 mongoose
-  .connect("mongodb+srv://anaislcno:datagrimoire@cluster-grimoire.ufaucy9.mongodb.net/?retryWrites=true&w=majority", {
+  .connect(process.env.DB_CLUSTER, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
