@@ -53,11 +53,32 @@ exports.modifyBook = (req, res, next) => {
     : { ...req.body };
 
   delete bookObject._userId;
+
   Book.findOne({ _id: req.params.id })
     .then((book) => {
       if (book.userId != req.auth.userId) {
         res.status(403).json({ message: "Unauthorized request" });
       } else {
+        if (req.file) {
+          try {
+            const filename = book.imageUrl.split("/images/library/")[1];
+            fs.unlinkSync(`images/library/${filename}`);
+          } catch (error) {
+            console.error("suppression pas ok", error);
+          }
+
+          sharp(req.file.path)
+            .resize(500)
+            .jpeg({ quality: 80 })
+            .toFile(path.resolve(req.file.destination, "library", req.file.filename))
+            .then(() => {
+              fs.unlinkSync(req.file.path);
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+        }
+
         Book.updateOne({ _id: req.params.id }, { ...bookObject, _id: req.params.id })
           .then(() => res.status(200).json({ message: "Livre modifié!" }))
           .catch((error) => res.status(401).json({ error }));
