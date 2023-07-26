@@ -4,6 +4,9 @@
   border: 0;
   box-sizing: border-box;
   line-height: 1;
+  font-family: 'Fira Sans', sans-serif;
+  font-style: normal;
+  /* color: #2c1810; */
 }
 
 body {
@@ -86,7 +89,7 @@ h1 {
   color: #796157;
 }
 
-button,
+/* button,
 .button {
   color: #2c1810;
   background-color: #d9a963;
@@ -104,4 +107,4 @@ button:hover,
   background-color: #b99056;
   color: #fff;
   transition: 0.5s;
-}
+} */

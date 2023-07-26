@@ -2,8 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import BookItem from '../../components/Books/BookItem/BookItem';
-import Banner from '../../images/home_banner.jpg';
-import styles from './Home.module.css';
+import Banner from '../../images/library.jpg';
+import './Home.css';
 import { getBooks } from '../../lib/common';
 
 function Home() {
@@ -23,17 +23,17 @@ function Home() {
   }, []);
   const backgroundImageStyle = { backgroundImage: `url(${Banner})` };
   return (
-    <div className={styles.Home}>
-      <div className={styles.banner} style={backgroundImageStyle} />
-      <main className={styles.main}>
-        <header className={styles.head}>
-          <h1>Nos Livres</h1>
-          <p>à lire et à relire</p>
-          <Link to="/Ajouter" className="button">
-            + Ajouter un livre
+    <div className="home home__banner" style={backgroundImageStyle}>
+      <main className="home__main">
+        <header className="home__header">
+          <h1 className="home__title">Nos Livres</h1>
+          <h2 className="home__text">à lire et à relire</h2>
+          <Link to="/Ajouter" className="home__btn">
+            <span className="home__btn--plus">+ </span>
+            Ajouter un livre
           </Link>
         </header>
-        <section className={styles.bookList}>{loading ? <h1>Chargement</h1> : displayBooks()}</section>
+        <section className="booklist">{loading ? <h1>Chargement</h1> : displayBooks()}</section>
       </main>
     </div>
   );
