@@ -67,21 +67,20 @@ code {
 .container {
   width: 100%;
   max-width: 1440px;
-  margin:auto;
-
+  margin: auto 40px auto 50px;
 }
 
 .content-container {
   width: 90%;
   max-width: 1320px;
   margin: auto;
-  padding-block: 5em;
+  padding-block: 50px;
 
 }
 
 .backArrow {
   display: block;
-  margin-bottom: 5em;
+  margin-bottom: 50px;
   color: #796157;
   font-family: "DM Sans", sans-serif;
 

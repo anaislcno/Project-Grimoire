@@ -139,7 +139,7 @@ exports.rateBook = (req, res, next) => {
 
 exports.getTopRatedBooks = (req, res, next) => {
   Book.find()
-    .sort({ averageRating: -1 }) // Trier par note moyenne décroissante
+    .sort({ averageRating: -1 }) // Trier
     .limit(3) // Récupérer les trois premiers livres
     .then((books) => res.status(200).json(books))
     .catch((error) => res.status(400).json({ error }));
