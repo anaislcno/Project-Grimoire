@@ -1,0 +1,49 @@
+.header {
+  font-family: 'Fira Sans', serif;
+  background-color: #ffffff;
+  min-height: 90px;
+  display: flex;
+  align-items: center;
+}
+
+.header div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.header ul {
+  display: flex;
+  align-items: center;
+}
+
+.header ul li {
+  padding-inline: 20px;
+  list-style-type: none;
+}
+
+.header__link {
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+}
+
+.header__link:hover {
+  text-decoration: none;
+  color: #796157;
+}
+
+@media all and (max-width: 600px) {
+  .header div {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .header img {
+    margin-top: 20px;
+    width: 50%;
+  }
+
+  .header ul li {
+    padding-block: 20px;
+  }
+}
