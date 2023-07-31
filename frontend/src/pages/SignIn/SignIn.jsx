@@ -1,3 +1,6 @@
+/* eslint-disable react/jsx-closing-bracket-location */
+/* eslint-disable react/jsx-curly-brace-presence */
+/* eslint-disable no-console */
 import React, { useState } from 'react';
 import axios from 'axios';
 import * as PropTypes from 'prop-types';
@@ -6,7 +9,7 @@ import { API_ROUTES, APP_ROUTES } from '../../utils/constants';
 import { useUser } from '../../lib/customHooks';
 import { storeInLocalStorage } from '../../lib/common';
 import { ReactComponent as Logo } from '../../images/Logo.svg';
-import styles from './SignIn.module.css';
+import './SignIn.css';
 
 function SignIn({ setUser }) {
   const navigate = useNavigate();
@@ -70,14 +73,14 @@ function SignIn({ setUser }) {
       setIsLoading(false);
     }
   };
-  const errorClass = notification.error ? styles.Error : null;
+  const errorClass = notification.error ? 'error' : null;
   return (
-    <div className={`${styles.SignIn} container`}>
-      <Logo />
-      <div className={`${styles.Notification} ${errorClass}`}>
-        {notification.message.length > 0 && <p>{notification.message}</p>}
+    <div className="login__container">
+      <div className="login__img">
+        <Logo />
       </div>
-      <div className={styles.Form}>
+      <div className={`notification ${errorClass}`}>{notification.message.length > 0 && <p>{notification.message}</p>}</div>
+      <div className="login__form">
         <label htmlFor={email}>
           <p>Adresse email</p>
           <input
@@ -86,7 +89,9 @@ function SignIn({ setUser }) {
             name="email"
             id="email"
             value={email}
-            onChange={(e) => { setEmail(e.target.value); }}
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
           />
         </label>
         <label htmlFor="password">
@@ -97,42 +102,22 @@ function SignIn({ setUser }) {
             name="password"
             id="password"
             value={password}
-            onChange={(e) => { setPassword(e.target.value); }}
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
           />
         </label>
-        <div className={styles.Submit}>
-          <button
-            type="submit"
-            className="
-            flex justify-center
-            p-2 rounded-md w-1/2 self-center
-            bg-gray-800  text-white hover:bg-gray-800"
-            onClick={signIn}
-          >
+        <div className="submit">
+          <button type="submit" className="login__btn" onClick={signIn}>
             {isLoading ? <div className="" /> : null}
-            <span>
-              Se connecter
-            </span>
+            Se connecter
           </button>
-          <span>OU</span>
-          <button
-            type="submit"
-            className="
-            flex justify-center
-            p-2 rounded-md w-1/2 self-center
-            bg-gray-800  text-white hover:bg-gray-800"
-            onClick={signUp}
-          >
-            {
-                isLoading
-                  ? <div className="mr-2 w-5 h-5 border-l-2 rounded-full animate-spin" /> : null
-              }
-            <span>
-              {'S\'inscrire'}
-            </span>
+          <span className="login__text">OU</span>
+          <button type="submit" className="login__btn" onClick={signUp}>
+            {isLoading ? <div className="mr-2 w-5 h-5 border-l-2 rounded-full animate-spin" /> : null}
+            {"S'inscrire"}
           </button>
         </div>
-
       </div>
     </div>
   );
