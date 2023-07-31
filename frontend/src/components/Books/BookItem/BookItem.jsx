@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { displayStars } from '../../../lib/functions';
-import styles from './BookItem.module.css';
+import './BookItem.css';
 
 function BookItem({ book, size }) {
   let title;
@@ -18,13 +18,11 @@ function BookItem({ book, size }) {
       break;
   }
   return (
-    <Link to={`/livre/${book.id}`} className={styles.BookItem}>
+    <Link to={`/livre/${book.id}`} className="book__item">
       <article>
-        <img className={styles.BookImage} src={book.imageUrl} alt={`${book.title}, ${book.author} - ${book.year}`} />
-        <div className={styles.BookInfo}>
-          <div className={styles.Rating}>
-            {displayStars(book.averageRating)}
-          </div>
+        <img className="book__img" src={book.imageUrl} alt={`${book.title}, ${book.author} - ${book.year}`} />
+        <div className="book__info">
+          <div className="book__rating">{displayStars(book.averageRating)}</div>
           {title}
           <p>{book.author}</p>
           <p>{book.year}</p>
@@ -45,10 +43,12 @@ BookItem.propTypes = {
     year: PropTypes.number,
     imageUrl: PropTypes.string,
     genre: PropTypes.string,
-    ratings: PropTypes.arrayOf(PropTypes.shape({
-      userId: PropTypes.string,
-      grade: PropTypes.number,
-    })),
+    ratings: PropTypes.arrayOf(
+      PropTypes.shape({
+        userId: PropTypes.string,
+        grade: PropTypes.number,
+      }),
+    ),
     averageRating: PropTypes.number,
   }).isRequired,
 };

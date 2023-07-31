@@ -33,7 +33,7 @@ function Home() {
             Ajouter un livre
           </Link>
         </header>
-        <section className="booklist">{loading ? <h1>Chargement</h1> : displayBooks()}</section>
+        <section className="booklist">{loading ? <h1 className="load">Chargement</h1> : displayBooks()}</section>
       </main>
     </div>
   );
