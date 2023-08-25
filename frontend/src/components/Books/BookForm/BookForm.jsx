@@ -1,3 +1,5 @@
+/* eslint-disable no-alert */
+/* eslint-disable object-curly-newline */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -15,15 +17,16 @@ function BookForm({ book, validate }) {
   const [rating, setRating] = useState(0);
 
   const navigate = useNavigate();
-  const {
-    register, watch, formState, handleSubmit, reset,
-  } = useForm({
-    defaultValues: useMemo(() => ({
-      title: book?.title,
-      author: book?.author,
-      year: book?.year,
-      genre: book?.genre,
-    }), [book]),
+  const { register, watch, formState, handleSubmit, reset } = useForm({
+    defaultValues: useMemo(
+      () => ({
+        title: book?.title,
+        author: book?.author,
+        year: book?.year,
+        genre: book?.genre,
+      }),
+      [book],
+    ),
   });
   useEffect(() => {
     reset(book);
@@ -87,9 +90,7 @@ function BookForm({ book, validate }) {
       </label>
       <label htmlFor="rate">
         <p>Note</p>
-        <div className={styles.Stars}>
-          {generateStarsInputs(rating, register, readOnlyStars)}
-        </div>
+        <div className={styles.Stars}>{generateStarsInputs(rating, register, readOnlyStars)}</div>
       </label>
       <label htmlFor="file">
         <p>Visuel</p>
@@ -105,11 +106,12 @@ function BookForm({ book, validate }) {
               <p>Ajouter une image</p>
             </>
           )}
-
         </div>
         <input {...register('file')} type="file" id="file" />
       </label>
-      <button type="submit">Publier</button>
+      <button className={styles.BtnForm} type="submit">
+        Publier
+      </button>
     </form>
   );
 }
@@ -124,10 +126,12 @@ BookForm.propTypes = {
     year: PropTypes.number,
     imageUrl: PropTypes.string,
     genre: PropTypes.string,
-    ratings: PropTypes.arrayOf(PropTypes.shape({
-      userId: PropTypes.string,
-      grade: PropTypes.number,
-    })),
+    ratings: PropTypes.arrayOf(
+      PropTypes.shape({
+        userId: PropTypes.string,
+        grade: PropTypes.number,
+      }),
+    ),
     averageRating: PropTypes.number,
   }),
   validate: PropTypes.func,

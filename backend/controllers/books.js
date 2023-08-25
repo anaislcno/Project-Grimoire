@@ -10,7 +10,7 @@ exports.createBook = async (req, res, next) => {
   const { filename: image } = req.file;
 
   await sharp(req.file.path)
-    .resize(500)
+    .resize(200)
     .jpeg({ quality: 80 })
     .toFile(path.resolve(req.file.destination, "library", image))
     .then(() => {
